@@ -1,0 +1,326 @@
+---
+title: "capstone simulation"
+author: "Kethrie Heasley"
+date: "1/26/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Capstone Simulation
+
+```{r}
+student_ID = sample(x = c(0:600000),size = 1000, replace = TRUE)
+student_ID
+```
+
+
+```{r}
+year_cohort = sample(x = c('2019', '2020','2021'), size = 1000, replace = TRUE)
+year_cohort
+```
+
+
+```{r}
+home_state = sample(x = c('PA', 'MD', 'OH'), size = 1000, replace = TRUE)
+home_state
+```
+
+
+```{r}
+high_school = sample(x = c('Latrobe', 'Ligonier','Derry', 'Mt. Pleasant', 'Southmoreland', 'Hempfield', 'Greensburg Salem', 'Franklin Regional', 'Penn Trafford', 'Frazier', 'Jennette', 'Blairsville', 'Plum', 'McKeesport', 'Norwin'), size = 1000, replace = TRUE)
+high_school
+# ask about other schools ----> can change to code for actual data
+```
+
+
+```{r}
+hs_GPA = rnorm(1000, mean = 3.0, sd = 0.8)
+
+hs_GPA = ifelse(hs_GPA < 2.0, 2.0, hs_GPA)
+hs_GPA = ifelse(hs_GPA > 4.0 , 4.0, hs_GPA)
+
+hist(hs_GPA)
+hs_GPA
+# ask how to set max value
+# lbound=0,ubound=340,round_y=0.01,round_m=0.01
+```
+
+
+```{r}
+hs_class_size = sample(x = c(100:600), size = 1000, replace = TRUE)
+hs_class_size
+```
+
+
+```{r}
+hs_class_rank = sample(x = c(1:600), size = 1000, replace = TRUE)
+hs_class_rank
+```
+
+
+```{r}
+SAT_scores = rnorm(1000, mean = 500, sd = 100)
+round(SAT_scores, digits = 0)
+SAT_scores
+```
+
+
+```{r}
+ACT_scores = rnorm(1000, mean = 20, sd = 5)
+round(ACT_scores, digits = 0)
+ACT_scores
+```
+d   
+
+```{r}
+AP_classes = rpois(1000, 1.25)
+AP_classes
+```
+
+
+```{r}
+intended_major = sample(x = c('Accounting', 'Anthropology', 'Art Education', 'Biochemistry', 'Biology', 'Business Administration', 'Business Data Analytics', 'Chemistry', 'Communications', 'Cyber Security', 'Computer Science', 'Criminology, Law and Society', 'Data Science', 'Digitial Humanities', 'Digital Arts and Media', 'Early Childhood PreK-4', 'Education', 'English', 'Environmental Chemistry', 'Economics', 'Engineering', 'Environmental Science', 'Finance', 'French', 'Health and Physical Education', 'History', 'Health Science', 'Information Systems', 'International Business', 'Integrated Science', 'Liberal Arts', 'Management', 'Mathematics', 'Middle Grade Education', 'Marketing', 'Music', 'Musice Performance', 'Nursing', 'Philosophy and Politics', 'Physics/Physics Education', 'Psycology', 'Public Policy', 'Philosophy', 'Philosophy and Theology', 'Politics and Political Science', 'Public History', 'Spanish', 'Sports Management', 'Sociology', 'Sports and Media', 'Studio Art', 'Theology'), size = 1000, replace = TRUE)
+intended_major
+```
+
+
+```{r}
+college_school = sample(x = c('BOYR', 'MCK','AHSS'), size = 1000, replace = TRUE)
+college_school
+```
+
+
+```{r}
+minority = sample(x = c('yes', 'no'), size = 1000, replace = TRUE)
+minority
+```
+
+
+```{r}
+sex = sample(x = c('male', 'female', 'other'), size = 1000, replace = TRUE)
+sex
+```
+
+```{r}
+student_athlete = sample(x = c('yes', 'no'), size = 1000, replace = TRUE)
+student_athlete
+```
+
+
+```{r}
+full_part_time = sample(x = c('yes', 'no'), size = 1000, replace = TRUE)
+full_part_time
+#ask about if leaning towards full
+```
+
+
+```{r}
+resident_commuter = sample(x = c('resident', 'commuter'), size = 1000, replace = TRUE)
+resident_commuter
+```
+
+
+```{r}
+first_generation = sample(x = c('yes', 'no'), size = 1000, replace = TRUE)
+first_generation
+```
+
+
+```{r}
+pell_eligible = sample(x = c('yes', 'no'), size = 1000, replace = TRUE)
+pell_eligible
+```
+
+
+```{r}
+financial_aid = sample(x = c('yes', 'no'), size = 1000, replace = TRUE)
+financial_aid
+```
+
+
+```{r}
+financial_aid_amount = rnorm(1000, mean = 37000, sd = 1500)
+
+#financial_aid_amount = ifelse(financial_aid_amount < 0.0, 0.0, financial_aid_amount)
+#financial_aid_amount = ifelse(financial_aid_amount > 4.0 , 4.0, financial_aid_amount)
+
+financial_aid_amount
+# ask about round function/ bounds
+# lbound=0,ubound=340,round_y=0.01,round_m=0.01
+```
+## Second Section - repeat variables??
+
+```{r}
+class_rank = sample(x = c('Fr', 'So', 'Jr', 'Sr'), size = 1000, replace = TRUE)
+class_rank
+```
+
+
+```{r}
+flag_for_transfer = sample(x = c('yes', 'no'), size = 1000, replace = TRUE)
+flag_for_transfer
+```
+
+
+```{r}
+flag_for_opportunity = sample(x = c('yes', 'no'), size = 1000, replace = TRUE)
+flag_for_opportunity
+```
+
+
+```{r}
+current_major = sample(x = c('Accounting', 'Anthropology', 'Art Education', 'Biochemistry', 'Biology', 'Business Administration', 'Business Data Analytics', 'Chemistry', 'Communications', 'Cyber Security', 'Computer Science', 'Criminology, Law and Society', 'Data Science', 'Digitial Humanities', 'Digital Arts and Media', 'Early Childhood PreK-4', 'Education', 'English', 'Environmental Chemistry', 'Economics', 'Engineering', 'Environmental Science', 'Finance', 'French', 'Health and Physical Education', 'History', 'Health Science', 'Information Systems', 'International Business', 'Integrated Science', 'Liberal Arts', 'Management', 'Mathematics', 'Middle Grade Education', 'Marketing', 'Music', 'Musice Performance', 'Nursing', 'Philosophy and Politics', 'Physics/Physics Education', 'Psycology', 'Public Policy', 'Philosophy', 'Philosophy and Theology', 'Politics and Political Science', 'Public History', 'Spanish', 'Sports Management', 'Sociology', 'Sports and Media', 'Studio Art', 'Theology'), size = 1000, replace = TRUE)
+current_major
+```
+
+
+```{r}
+first_semester_GPA = rnorm(1000, mean = 3.0, sd = 0.8)
+
+first_semester_GPA = ifelse(first_semester_GPA < 0.0, 0.0, first_semester_GPA)
+first_semester_GPA = ifelse(first_semester_GPA > 4.0 , 4.0, first_semester_GPA)
+
+first_semester_GPA
+# ask how to set max value
+# lbound=0,ubound=340,round_y=0.01,round_m=0.01
+```
+
+
+```{r}
+first_year_GPA = rnorm(1000, mean = 3.0, sd = 0.8)
+
+first_year_GPA = ifelse(first_year_GPA < 0.0, 0.0, first_year_GPA)
+first_year_GPA = ifelse(first_year_GPA > 4.0 , 4.0, first_year_GPA)
+
+first_year_GPA
+# ask how to set max value
+# lbound=0,ubound=340,round_y=0.01,round_m=0.01
+```
+
+
+```{r}
+#midterm_grades = sample(x = c('A', 'B', 'C', 'D', 'F'), size = 1000, replace = TRUE)
+#midterm_grades
+# scrap
+```
+
+
+```{r}
+#semester_grades = sample(x = c('A', 'B', 'C', 'D', 'F'), size = 1000, replace = TRUE)
+#semester_grades
+# ??????
+```
+
+
+```{r}
+cumulative_GPA = rnorm(1000, mean = 3.0, sd = 0.8)
+
+cumulative_GPA = ifelse(cumulative_GPA < 0.0, 0.0, cumulative_GPA)
+cumulative_GPA = ifelse(cumulative_GPA > 4.0 , 4.0, cumulative_GPA)
+
+cumulative_GPA
+# ask how to set max value
+# lbound=0,ubound=340,round_y=0.01,round_m=0.01
+```
+
+
+```{r}
+DFW_rate = rpois(1000, 0.8)
+DFW_rate
+# ask how to set max value
+# lbound=0,ubound=340,round_y=0.01,round_m=0.01
+```
+
+
+```{r}
+change_in_major = sample(x = c('yes', 'no'), size = 1000, replace = TRUE)
+change_in_major
+```
+
+
+```{r}
+attempted_credits = sample(x = c(12:20), size = 1000, replace = TRUE)
+attempted_credits
+```
+
+
+```{r}
+completed_credits = sample(x = c(12:20), size = 1000, replace = TRUE)
+completed_credits
+```
+
+
+```{r}
+predicted_GPA = rnorm(1000, mean = 3.0, sd = 0.8)
+predicted_GPA
+# ask how to set max value
+# lbound=0,ubound=340,round_y=0.01,round_m=0.01
+# actually predict???
+```
+
+
+```{r}
+probation = sample(x = c('yes', 'no'), size = 1000, replace = TRUE)
+probation
+```
+
+
+```{r}
+enrolled_withdrawn = sample(x = c('yes', 'no'), size = 1000, replace = TRUE)
+enrolled_withdrawn
+```
+
+
+
+```{r}
+reported_scores = sample(x = c('yes', 'N/A'), size = 1000, replace = TRUE)
+reported_scores
+SAT_scores = ifelse(reported_scores == 'N/A', NA, SAT_scores)
+SAT_scores
+# ??
+```
+
+
+```{r}
+simulation_df = c(student_ID, year_cohort, home_state, high_school, hs_GPA, hs_class_size, hs_class_rank, SAT_scores, ACT_scores, AP_classes, intended_major, college_school, minority, sex, student_athlete, full_part_time, resident_commuter, first_generation, pell_eligible, financial_aid, financial_aid_amount, class_rank, flag_for_transfer, flag_for_opportunity, current_major, first_semester_GPA, first_year_GPA, cumulative_GPA, DFW_rate, change_in_major, attempted_credits, completed_credits, predicted_GPA, probation, enrolled_withdrawn, reported_scores)
+simulation_df
+#midterm_grades, semester_grades,
+```
+
+## Logistic regression coeffiecient evaluation: 
+   - do we have data on those not admitted??
+   
+   - Beta associated w/ predictor x is the expected change in log odds of having the outcome per unit     change in x
+   - statistically significant if p-value is < .05
+   
+   - if intercept is negative: probability < .5 
+   - if positive: prob > .5 
+   - if = 0: prob =.5
+
+
+
+```{r}
+boxplot(hs_GPA$NA,  )
+```
+
+
+```{r}
+summary(hs_class_rank)
+```
+
+
+```{r}
+subset = (simulation_df$hs_GPA, simulation_df$SAT_scores is.na)
+subset
+```
+
+
+```{r}
+library(dplyr)
+simulation_df %>%
+  group_by(is.na(SAT_scores)) %>%
+  summarize(mean(hs_gpa))
+```
