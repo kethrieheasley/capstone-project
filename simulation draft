@@ -42,10 +42,7 @@ hs_GPA = rnorm(1000, mean = 3.0, sd = 0.8)
 hs_GPA = ifelse(hs_GPA < 2.0, 2.0, hs_GPA)
 hs_GPA = ifelse(hs_GPA > 4.0 , 4.0, hs_GPA)
 
-hist(hs_GPA)
 hs_GPA
-# ask how to set max value
-# lbound=0,ubound=340,round_y=0.01,round_m=0.01
 ```
 
 
@@ -73,7 +70,7 @@ ACT_scores = rnorm(1000, mean = 20, sd = 5)
 round(ACT_scores, digits = 0)
 ACT_scores
 ```
-d   
+
 
 ```{r}
 AP_classes = rpois(1000, 1.25)
@@ -113,7 +110,6 @@ student_athlete
 ```{r}
 full_part_time = sample(x = c('yes', 'no'), size = 1000, replace = TRUE)
 full_part_time
-#ask about if leaning towards full
 ```
 
 
@@ -142,16 +138,14 @@ financial_aid
 
 
 ```{r}
-financial_aid_amount = rnorm(1000, mean = 37000, sd = 1500)
+financial_aid_amount = rnorm(1000, mean = 20000, sd = 3000)
 
-#financial_aid_amount = ifelse(financial_aid_amount < 0.0, 0.0, financial_aid_amount)
-#financial_aid_amount = ifelse(financial_aid_amount > 4.0 , 4.0, financial_aid_amount)
+financial_aid_amount = ifelse(financial_aid_amount < 0.00, 0.00, financial_aid_amount)
+financial_aid_amount = ifelse(financial_aid_amount > 37000.00 , 37000.00, financial_aid_amount)
 
 financial_aid_amount
-# ask about round function/ bounds
-# lbound=0,ubound=340,round_y=0.01,round_m=0.01
 ```
-## Second Section - repeat variables??
+## Second Section
 
 ```{r}
 class_rank = sample(x = c('Fr', 'So', 'Jr', 'Sr'), size = 1000, replace = TRUE)
@@ -184,8 +178,6 @@ first_semester_GPA = ifelse(first_semester_GPA < 0.0, 0.0, first_semester_GPA)
 first_semester_GPA = ifelse(first_semester_GPA > 4.0 , 4.0, first_semester_GPA)
 
 first_semester_GPA
-# ask how to set max value
-# lbound=0,ubound=340,round_y=0.01,round_m=0.01
 ```
 
 
@@ -196,8 +188,6 @@ first_year_GPA = ifelse(first_year_GPA < 0.0, 0.0, first_year_GPA)
 first_year_GPA = ifelse(first_year_GPA > 4.0 , 4.0, first_year_GPA)
 
 first_year_GPA
-# ask how to set max value
-# lbound=0,ubound=340,round_y=0.01,round_m=0.01
 ```
 
 
@@ -211,7 +201,7 @@ first_year_GPA
 ```{r}
 #semester_grades = sample(x = c('A', 'B', 'C', 'D', 'F'), size = 1000, replace = TRUE)
 #semester_grades
-# ??????
+# scrap
 ```
 
 
@@ -222,16 +212,12 @@ cumulative_GPA = ifelse(cumulative_GPA < 0.0, 0.0, cumulative_GPA)
 cumulative_GPA = ifelse(cumulative_GPA > 4.0 , 4.0, cumulative_GPA)
 
 cumulative_GPA
-# ask how to set max value
-# lbound=0,ubound=340,round_y=0.01,round_m=0.01
 ```
 
 
 ```{r}
 DFW_rate = rpois(1000, 0.8)
 DFW_rate
-# ask how to set max value
-# lbound=0,ubound=340,round_y=0.01,round_m=0.01
 ```
 
 
@@ -256,9 +242,6 @@ completed_credits
 ```{r}
 predicted_GPA = rnorm(1000, mean = 3.0, sd = 0.8)
 predicted_GPA
-# ask how to set max value
-# lbound=0,ubound=340,round_y=0.01,round_m=0.01
-# actually predict???
 ```
 
 
@@ -280,13 +263,13 @@ reported_scores = sample(x = c('yes', 'N/A'), size = 1000, replace = TRUE)
 reported_scores
 SAT_scores = ifelse(reported_scores == 'N/A', NA, SAT_scores)
 SAT_scores
-# ??
 ```
 
 
 ```{r}
 simulation_df = c(student_ID, year_cohort, home_state, high_school, hs_GPA, hs_class_size, hs_class_rank, SAT_scores, ACT_scores, AP_classes, intended_major, college_school, minority, sex, student_athlete, full_part_time, resident_commuter, first_generation, pell_eligible, financial_aid, financial_aid_amount, class_rank, flag_for_transfer, flag_for_opportunity, current_major, first_semester_GPA, first_year_GPA, cumulative_GPA, DFW_rate, change_in_major, attempted_credits, completed_credits, predicted_GPA, probation, enrolled_withdrawn, reported_scores)
-simulation_df
+
+simulation_df = data.frame(student_ID, year_cohort, home_state, high_school, hs_GPA, hs_class_size, hs_class_rank, SAT_scores, ACT_scores, AP_classes, intended_major, college_school, minority, sex, student_athlete, full_part_time, resident_commuter, first_generation, pell_eligible, financial_aid, financial_aid_amount, class_rank, flag_for_transfer, flag_for_opportunity, current_major, first_semester_GPA, first_year_GPA, cumulative_GPA, DFW_rate, change_in_major, attempted_credits, completed_credits, predicted_GPA, probation, enrolled_withdrawn, reported_scores)
 #midterm_grades, semester_grades,
 ```
 
@@ -303,18 +286,50 @@ simulation_df
 
 
 ```{r}
-boxplot(hs_GPA$NA,  )
+boxplot(simulation_df$SAT_scores)
 ```
 
 
 ```{r}
-summary(hs_class_rank)
+boxplot(simulation_df$hs_class_rank)
+```
+```{r}
+boxplot(simulation_df$ACT_scores)
 ```
 
 
 ```{r}
-subset = (simulation_df$hs_GPA, simulation_df$SAT_scores is.na)
-subset
+boxplot(simulation_df$AP_classes)
+```
+
+
+```{r}
+hist(hs_GPA)
+```
+
+
+```{r}
+boxplot(simulation_df$financial_aid_amount)
+```
+
+
+```{r}
+hist(first_year_GPA)
+```
+
+
+```{r}
+hist(first_semester_GPA)
+```
+
+
+```{r}
+hist(cumulative_GPA)
+```
+
+
+```{r}
+hist(predicted_GPA)
 ```
 
 
@@ -322,5 +337,5 @@ subset
 library(dplyr)
 simulation_df %>%
   group_by(is.na(SAT_scores)) %>%
-  summarize(mean(hs_gpa))
+  summarize(mean(hs_GPA))
 ```
