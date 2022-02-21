@@ -115,6 +115,7 @@ sum(nrow(final_master_df))
 
 
 ```{r}
+library(dplyr)
 fall_term_subset = subset(x = final_master_df, select = c(FA2019_term_GPA, FA2020_term_GPA, FA2021_term_GPA))
 #head(fall_term_subset)
 first_term_GPA = apply(fall_term_subset, MARGIN = 1, FUN = function(x) first(na.omit(x)))
