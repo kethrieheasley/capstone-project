@@ -1,2 +1,2 @@
-# capstone-project
-admission/ financial aid research
+# Capstone-Project
+This is our senior capstone research.  In this project, we were given the task to take admission and financial aid data from our personal college, Saint Vincent, and attempt to find a new variable to better aid the admissions process.  Since COVID-19 hit in spring of 2020, Saint Vincent no longer requires applicants to submit SAT/ ACT scores.  We are using our data science and data analytics knowledge to attempt to find a better way to admit new students to Saint Vincent.
