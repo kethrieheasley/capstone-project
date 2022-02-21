@@ -36,22 +36,145 @@ length(unique(master_df$ID))== nrow(master_df)
 
 ```{r}
 new_master_df = subset(master_df, select = -c(INST_CODE,CONCENTRATION, CONT_TI, CONT_SI, CONT_CI, CONT_AI, CONT_TE, CONT_CUML, OREN_SESS...29, MODEL_SCORE, SITE_CD, FLAG_LEGACY, FLAG_EARLY_ADM, FLAG_E_DECISION, DEPT2_ADMIT, GRADUATEDEGREE, GRADUATEDEGREEATTRIBUTE, INST_RAT, OTHERTESTSCORE1, OTHERTESTSCORE2, TEST_MATH, TEST_READING, TEST_ENGLISH, TEST_OTHER, FLAG_EST_EFC, HOUSING_FINANCIALAID, EFC_12_MONTH, ISIR_STATUS, FLAG_ISIR_VALID, PLUS_DENIAL, ISIR_STATE, ISIR_GENDER, ISIR_GRADE_LVL, ISIR_HSDIPLOMA_OR_GED, ISIR_DEGREE_CERT, FLAG_ISIR_FIRST_BACHELORS, FLAG_ISIR_MASTERS_DOCTORATE, ISIR_MOTHER_ED_LVL, ISIR_FATHER_ED_LVL, ISIR_NUMBER_IN_HOUSEHOLD, ISIR_NUMBER_IN_COLLEGE, FLAG_AWARD_SIGNED, DATE_AWARD_SIGNED, AWD_REACT, OTHER_CHGS, FLAG_PERFORMANCE, FLAG_EARLY_AID, FLAG_INSTATE, TUITION_ELIGIBILITY, FLAG_INSTITUTIONAL_PROFILE, DATE_INSTITUTIONAL_PROFILE, INSTITUTIONAL_FC, INSTITUTIONAL_TOTAL_INCOME, INSTITUTIONAL_PARENT_INCOME, INSTITUTIONAL_STUDENT_INCOME, AWD_STATUS1, AWD_STATUS2, AWD_STATUS3,AWD_STATUS4, AWD_STATUS5, AWD_STATUS6, AWD_STATUS7, AWD_STATUS8, AWD_STATUS9, AWD_STATUS10, AWD_STATUS11, AWD_STATUS12, AWD_STATUS13, AWD_STATUS14, AWD_STATUS15, AWD_STATUS16, AWD_STATUS17, AWD_CD11, AWD_CD12, AWD_CD13, AWD_CD14, AWD_CD15, AWD_CD16,AWD_CD17, AWD_AMT11, AWD_AMT12, AWD_AMT13, AWD_AMT14, AWD_AMT15, AWD_AMT16, AWD_AMT17, AWD_STATUS18, AWD_STATUS19, AWD_STATUS20, AWD_CD18, AWD_CD19, AWD_CD20, AWD_AMT18, AWD_AMT19, AWD_AMT20, USERDEF01, USERDEF02, USERDEF03, USERDEF04, USERDEF05, USERDEF06, USERDEF07, USERDEF08, USERDEF09, USERDEF10, USERDEF11, USERDEF12, USERDEF13, USERDEF14, USERDEF15, USERDEF16, USERDEF17, USERDEF18, USERDEF18, USERDEF19, USERDEF20, USERDEF21, USERDEF22, USERDEF23, USERDEF24, USERDEF25, FLAG_PERS_TERM, FLAG_PERS_YEAR, FS_GPA, FF_GPA, FLAG_PERS_OTHER1, FLAG_PERS_OTHER1, CUM_GPA_OTHER1, CUM_GPA_OTHER2, ENR_COLLEGE, ENR_CLEARINGHOUSE, DEPT1_ENROLLED, DEPT2_ENROLLED, ADVISOR, WORKING_HOURS, SECTION, RESIDENCE_HALL, HOURS_ATTEMPTED, HOURS_COMPLETED, CLASS, OREN_SESS...208, OREN_SESS...209, MAJOR1_ENROLLED_ID, MAJOR2_ENROLLED_ID, MAJOR2_ADMIT_ID, HOURS_CUMULATIVE, FLAG_PERS_OTHER2, HS_GRAD_YR, ACTREADING, ACTSCIENCE, ACTWRITTEN))
-# how to do one's w spaces and '
 ```
 
 
 ```{r}
-print(max(new_master_df$ACTWRITTEN))
+names(new_master_df)[names(new_master_df) == "2020SP F's at midterm"] <- 'SP2020_F_midterm'
+names(new_master_df)[names(new_master_df) == "2020SP D's at midterm"] <- 'SP2020_D_midterm'
+names(new_master_df)[names(new_master_df) == "2020FA F's at midterm"] <- 'FA2020_F_midterm'
+names(new_master_df)[names(new_master_df) == "2020FA D's at midterm"] <- 'FA2020_D_midterm'
+names(new_master_df)[names(new_master_df) == "2021SP F's at midterm"] <- 'SP2021_F_midterm'
+names(new_master_df)[names(new_master_df) == "2021SP D's at midterm"] <- 'SP2021_D_midterm'
+names(new_master_df)[names(new_master_df) == "2021FA F's at midterm"] <- 'FA2021_F_midterm'
+names(new_master_df)[names(new_master_df) == "2021FA D's at midterm"] <- 'FA2021_D_midterm'
+names(new_master_df)[names(new_master_df) == "2022SP F's at midterm"] <- 'SP2022_F_midterm'
+names(new_master_df)[names(new_master_df) == "2022SP D's at midterm"] <- 'SP2022_D_midterm'
+names(new_master_df)[names(new_master_df) == "2019FA F's at midterm"] <- 'FA2019_F_midterm'
+names(new_master_df)[names(new_master_df) == "2019FA D's at midterm"] <- 'FA2019_D_midterm'
+names(new_master_df)[names(new_master_df) == "2022SP term GPA"] <- 'SP2022_term_GPA'
+names(new_master_df)[names(new_master_df) == "2022SP cumulative GPA"] <- 'SP2022_cumulative_GPA'
+names(new_master_df)[names(new_master_df) == "2019FA term GPA"] <- 'FA2019_term_GPA'
+names(new_master_df)[names(new_master_df) == "2019FA cumulative GPA"] <- 'FA2019_cumulative_GPA'
+names(new_master_df)[names(new_master_df) == "Standing in 2019FA"] <- 'Standing_2019FA'
+names(new_master_df)[names(new_master_df) == "2020FA term GPA"] <- 'FA2020_term_GPA'
+names(new_master_df)[names(new_master_df) == "2020FA cumulative GPA"] <- 'FA2020_cumulative_GPA'
+names(new_master_df)[names(new_master_df) == "Standing in 2020FA"] <- 'Standing_2020FA'
+names(new_master_df)[names(new_master_df) == "2020SP term GPA"] <- 'SP2020_term_GPA'
+names(new_master_df)[names(new_master_df) == "2020SP cumulative GPA"] <- 'SP2020_cumulative_GPA'
+names(new_master_df)[names(new_master_df) == "Enrollment status after 2020SP"] <- 'enrollment_status_2020SP'
+names(new_master_df)[names(new_master_df) == "2021FA term GPA"] <- 'FA2021_term_GPA'
+names(new_master_df)[names(new_master_df) == "2021FA cumulative GPA"] <- 'FA2021_cumulative_GPA'
+names(new_master_df)[names(new_master_df) == "Standing in 2021FA"] <- 'Standing_2021FA'
+names(new_master_df)[names(new_master_df) == "2021SP term GPA"] <- 'SP2021_term_GPA'
+names(new_master_df)[names(new_master_df) == "2021SP GPA"] <- 'SP2021_GPA'
+names(new_master_df)[names(new_master_df) == "enrollment status"] <- 'enrollment_status'
+names(new_master_df)[names(new_master_df) == "Standing in 2022SP"] <- 'Standing_2022SP'
 ```
 
 
 ```{r}
-make_numeric_subset = c(new_master_df$CLASS_RANK, new_master_df$CLASS_SIZE, new_master_df$STANDING, new_master_df$HSGPA, new_master_df$C_GPA, new_master_df$ACT_COMP, new_master_df$ACTENGLISH, new_master_df$ACTMATH, new_master_df$NEW_SAT_MATH, new_master_df$NEW_SAT_VERBAL, new_master_df$P_GPA, new_master_df$TUITION, new_master_df$ROOM, new_master_df$BOARD, new_master_df$FEES, new_master_df$AWD_AMT5,new_master_df$AWD_AMT6, new_master_df$AWD_AMT7, new_master_df$AWD_AMT8, new_master_df$AWD_AMT9, new_master_df$AWD_AMT10, new_master_df$STATE_ID, new_master_df$`2020FA term GPA`, new_master_df$MAJOR_2020FA, new_master_df$`2020SP term GPA`, new_master_df$`2020SP cumulative GPA`)
-now_numeric = as.numeric(numeric_subset)
-# ?????
+final_master_df = subset(new_master_df, select = -c(SP2022_term_GPA, SP2022_F_midterm, SP2022_D_midterm, Standing_2022SP, SP2022_cumulative_GPA))
 ```
 
 
 ```{r}
-is.numeric(new_numeric)
+final_master_df$CLASS_RANK = as.numeric(final_master_df$CLASS_RANK)
+final_master_df$CLASS_SIZE = as.numeric(final_master_df$CLASS_SIZE)
+final_master_df$STANDING = as.numeric(final_master_df$STANDING)
+final_master_df$HSGPA = as.numeric(final_master_df$HSGPA)
+final_master_df$C_GPA = as.numeric(final_master_df$C_GPA)
+final_master_df$ACT_COMP =  as.numeric(final_master_df$ACT_COMP)
+final_master_df$ACTENGLISH =  as.numeric(final_master_df$ACTENGLISH)
+final_master_df$ACTMATH = as.numeric(final_master_df$ACTMATH)
+final_master_df$NEW_SAT_MATH = as.numeric(final_master_df$NEW_SAT_MATH)
+final_master_df$NEW_SAT_VERBAL = as.numeric(final_master_df$NEW_SAT_VERBAL)
+final_master_df$P_GPA = as.numeric(final_master_df$P_GPA)
+final_master_df$TUITION = as.numeric(final_master_df$TUITION)
+final_master_df$ROOM = as.numeric(final_master_df$ROOM)
+final_master_df$BOARD = as.numeric(final_master_df$BOARD)
+final_master_df$FEES = as.numeric(final_master_df$FEES)
+final_master_df$AWD_AMT5 = as.numeric(final_master_df$AWD_AMT5)
+final_master_df$AWD_AMT6 = as.numeric(final_master_df$AWD_AMT6)
+final_master_df$AWD_AMT7 = as.numeric(final_master_df$AWD_AMT7)
+final_master_df$AWD_AMT8 = as.numeric(final_master_df$AWD_AMT8)
+final_master_df$AWD_AMT9 = as.numeric(final_master_df$AWD_AMT9)
+final_master_df$AWD_AMT10 = as.numeric(final_master_df$AWD_AMT10)
+final_master_df$STATE_ID = as.numeric(final_master_df$STATE_ID)
+final_master_df$FA2020_term_GPA = as.numeric(final_master_df$FA2020_term_GPA)
+final_master_df$MAJOR_2020FA = as.numeric(final_master_df$MAJOR_2020FA)
+final_master_df$SP2020_term_GPA = as.numeric(final_master_df$SP2020_term_GPA)
+final_master_df$SP2020_cumulative_GPA = as.numeric(final_master_df$SP2020_cumulative_GPA)
 ```
+
+
+```{r}
+#final_master_df <- final_master_df[-c(11), ]
+sum(nrow(final_master_df))
+#add back in
+```
+
+
+```{r}
+library(dplyr)
+fall_term_subset = subset(x = final_master_df, select = c(FA2019_term_GPA, FA2020_term_GPA, FA2021_term_GPA))
+#head(fall_term_subset)
+first_term_GPA = apply(fall_term_subset, MARGIN = 1, FUN = function(x) first(na.omit(x)))
+#print(first_term_GPA) 
+sum(is.na(first_term_GPA))
+# The one NA value that was left after doing doing this (found in row 11), was truly an NA for every fall term, so we removed this single row. This is done in the code block above.
+```
+
+
+```{r}
+spring_term_subset = subset(x = final_master_df, select = c(SP2020_term_GPA, SP2021_term_GPA))
+#head(spring_term_subset)
+first_term_cumulative = apply(spring_term_subset, MARGIN = 1, FUN = function(x) first(na.omit(x)))
+#print(spring_term_GPA)
+sum(is.na(first_term_cumulative))
+# ???
+#Due to COVID-19, there are numerous NA's for the SP2020 semester since we were offered to  do classes as pass/ fail.  unsure what to do in this instance.
+```
+
+
+```{r}
+first_year_subset = subset(x = final_master_df, select = c(SP2020_cumulative_GPA, FA2019_cumulative_GPA, FA2020_cumulative_GPA, FA2021_cumulative_GPA, SP2021_GPA))
+first_year_cumulative = apply(first_year_subset , MARGIN = 1, FUN = function(x) first(na.omit(x)))
+sum(is.na(first_year_cumulative))
+```
+
+
+```{r}
+#sum(ncol(final_master_df))
+final_master_df <- final_master_df[ , -c(75, 76, 81, 82, 88, 92, 93, 99)]
+sum(ncol(final_master_df))
+# Did not remove spring terms.
+```
+
+
+```{r}
+library(dplyr)
+final_master_df$first_term_GPA <- first_term_GPA
+final_master_df$first_year_cumulative <- first_year_cumulative
+final_master_df$first_term_cumulative <- first_term_cumulative
+sum(ncol(final_master_df))
+# Did not add spring terms.
+```
+
+EDA
+- fix the rest of cleaning
+- tabulating NA's
+- status withdrawn equal to # missing grades for that semester
+- summary stats
+- first term gpa
+- first year gpa
+- cumulative gpa
+- graphs for scores vs. no scores
+  - percent withdrew
+  - change in major
+  - GPA
+- proportions
+- bar charts
+- side by side box plots
+- gender
+- intended major
