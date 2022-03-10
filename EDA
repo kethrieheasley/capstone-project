@@ -1,1 +1,646 @@
 
+---
+title: "Capstone Project"
+author: "Kethrie Heasley"
+date: "2/11/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library('readxl')
+```
+
+
+```{r}
+admissions_df = read_excel('Admission+Data+-+Student+Copy.xlsx')
+```
+
+
+```{r}
+academic_df = read_excel('Academic+Record+Data+-+Student+Copy.xlsx')
+```
+
+
+```{r}
+master_df = merge.data.frame(admissions_df, academic_df, by.x = 'ID', by.y = 'ID')
+```
+
+
+```{r}
+length(unique(master_df$ID))== nrow(master_df)
+# no duplicates
+```
+
+
+```{r}
+new_master_df = subset(master_df, select = -c(INST_CODE,CONCENTRATION, CONT_TI, CONT_SI, CONT_CI, CONT_AI, CONT_TE, CONT_CUML, OREN_SESS...29, MODEL_SCORE, SITE_CD, FLAG_LEGACY, FLAG_EARLY_ADM, FLAG_E_DECISION, DEPT2_ADMIT, GRADUATEDEGREE, GRADUATEDEGREEATTRIBUTE, INST_RAT, OTHERTESTSCORE1, OTHERTESTSCORE2, TEST_MATH, TEST_READING, TEST_ENGLISH, TEST_OTHER, FLAG_EST_EFC, HOUSING_FINANCIALAID, EFC_12_MONTH, ISIR_STATUS, FLAG_ISIR_VALID, PLUS_DENIAL, ISIR_STATE, ISIR_GENDER, ISIR_GRADE_LVL, ISIR_HSDIPLOMA_OR_GED, ISIR_DEGREE_CERT, FLAG_ISIR_FIRST_BACHELORS, FLAG_ISIR_MASTERS_DOCTORATE, ISIR_MOTHER_ED_LVL, ISIR_FATHER_ED_LVL, ISIR_NUMBER_IN_HOUSEHOLD, ISIR_NUMBER_IN_COLLEGE, FLAG_AWARD_SIGNED, DATE_AWARD_SIGNED, AWD_REACT, OTHER_CHGS, FLAG_PERFORMANCE, FLAG_EARLY_AID, FLAG_INSTATE, TUITION_ELIGIBILITY, FLAG_INSTITUTIONAL_PROFILE, DATE_INSTITUTIONAL_PROFILE, INSTITUTIONAL_FC, INSTITUTIONAL_TOTAL_INCOME, INSTITUTIONAL_PARENT_INCOME, INSTITUTIONAL_STUDENT_INCOME, AWD_STATUS1, AWD_STATUS2, AWD_STATUS3,AWD_STATUS4, AWD_STATUS5, AWD_STATUS6, AWD_STATUS7, AWD_STATUS8, AWD_STATUS9, AWD_STATUS10, AWD_STATUS11, AWD_STATUS12, AWD_STATUS13, AWD_STATUS14, AWD_STATUS15, AWD_STATUS16, AWD_STATUS17, AWD_CD11, AWD_CD12, AWD_CD13, AWD_CD14, AWD_CD15, AWD_CD16,AWD_CD17, AWD_AMT11, AWD_AMT12, AWD_AMT13, AWD_AMT14, AWD_AMT15, AWD_AMT16, AWD_AMT17, AWD_STATUS18, AWD_STATUS19, AWD_STATUS20, AWD_CD18, AWD_CD19, AWD_CD20, AWD_AMT18, AWD_AMT19, AWD_AMT20, USERDEF01, USERDEF02, USERDEF03, USERDEF04, USERDEF05, USERDEF06, USERDEF07, USERDEF08, USERDEF09, USERDEF10, USERDEF11, USERDEF12, USERDEF13, USERDEF14, USERDEF15, USERDEF16, USERDEF17, USERDEF18, USERDEF18, USERDEF19, USERDEF20, USERDEF21, USERDEF22, USERDEF23, USERDEF24, USERDEF25, FLAG_PERS_TERM, FLAG_PERS_YEAR, FS_GPA, FF_GPA, FLAG_PERS_OTHER1, FLAG_PERS_OTHER1, CUM_GPA_OTHER1, CUM_GPA_OTHER2, ENR_COLLEGE, ENR_CLEARINGHOUSE, DEPT1_ENROLLED, DEPT2_ENROLLED, ADVISOR, WORKING_HOURS, SECTION, RESIDENCE_HALL, HOURS_ATTEMPTED, HOURS_COMPLETED, CLASS, OREN_SESS...208, OREN_SESS...209, MAJOR1_ENROLLED_ID, MAJOR2_ENROLLED_ID, MAJOR2_ADMIT_ID, HOURS_CUMULATIVE, FLAG_PERS_OTHER2, HS_GRAD_YR, ACTREADING, ACTSCIENCE, ACTWRITTEN))
+```
+
+
+```{r}
+names(new_master_df)[names(new_master_df) == "2020SP F's at midterm"] <- 'SP2020_F_midterm'
+names(new_master_df)[names(new_master_df) == "2020SP D's at midterm"] <- 'SP2020_D_midterm'
+names(new_master_df)[names(new_master_df) == "2020FA F's at midterm"] <- 'FA2020_F_midterm'
+names(new_master_df)[names(new_master_df) == "2020FA D's at midterm"] <- 'FA2020_D_midterm'
+names(new_master_df)[names(new_master_df) == "2021SP F's at midterm"] <- 'SP2021_F_midterm'
+names(new_master_df)[names(new_master_df) == "2021SP D's at midterm"] <- 'SP2021_D_midterm'
+names(new_master_df)[names(new_master_df) == "2021FA F's at midterm"] <- 'FA2021_F_midterm'
+names(new_master_df)[names(new_master_df) == "2021FA D's at midterm"] <- 'FA2021_D_midterm'
+names(new_master_df)[names(new_master_df) == "2022SP F's at midterm"] <- 'SP2022_F_midterm'
+names(new_master_df)[names(new_master_df) == "2022SP D's at midterm"] <- 'SP2022_D_midterm'
+names(new_master_df)[names(new_master_df) == "2019FA F's at midterm"] <- 'FA2019_F_midterm'
+names(new_master_df)[names(new_master_df) == "2019FA D's at midterm"] <- 'FA2019_D_midterm'
+names(new_master_df)[names(new_master_df) == "2022SP term GPA"] <- 'SP2022_term_GPA'
+names(new_master_df)[names(new_master_df) == "2022SP cumulative GPA"] <- 'SP2022_cumulative_GPA'
+names(new_master_df)[names(new_master_df) == "2019FA term GPA"] <- 'FA2019_term_GPA'
+names(new_master_df)[names(new_master_df) == "2019FA cumulative GPA"] <- 'FA2019_cumulative_GPA'
+names(new_master_df)[names(new_master_df) == "Standing in 2019FA"] <- 'Standing_2019FA'
+names(new_master_df)[names(new_master_df) == "2020FA term GPA"] <- 'FA2020_term_GPA'
+names(new_master_df)[names(new_master_df) == "2020FA cumulative GPA"] <- 'FA2020_cumulative_GPA'
+names(new_master_df)[names(new_master_df) == "Standing in 2020FA"] <- 'Standing_2020FA'
+names(new_master_df)[names(new_master_df) == "2020SP term GPA"] <- 'SP2020_term_GPA'
+names(new_master_df)[names(new_master_df) == "2020SP cumulative GPA"] <- 'SP2020_cumulative_GPA'
+names(new_master_df)[names(new_master_df) == "Enrollment status after 2020SP"] <- 'enrollment_status_2020SP'
+names(new_master_df)[names(new_master_df) == "2021FA term GPA"] <- 'FA2021_term_GPA'
+names(new_master_df)[names(new_master_df) == "2021FA cumulative GPA"] <- 'FA2021_cumulative_GPA'
+names(new_master_df)[names(new_master_df) == "Standing in 2021FA"] <- 'Standing_2021FA'
+names(new_master_df)[names(new_master_df) == "2021SP term GPA"] <- 'SP2021_term_GPA'
+names(new_master_df)[names(new_master_df) == "2021SP GPA"] <- 'SP2021_cumulative_GPA'
+names(new_master_df)[names(new_master_df) == "enrollment status"] <- 'enrollment_status'
+names(new_master_df)[names(new_master_df) == "Standing in 2022SP"] <- 'Standing_2022SP'
+```
+
+
+```{r}
+final_master_df = subset(new_master_df, select = -c(SP2022_term_GPA, SP2022_F_midterm, SP2022_D_midterm, Standing_2022SP, SP2022_cumulative_GPA))
+```
+
+
+```{r}
+final_master_df$CLASS_RANK = as.numeric(final_master_df$CLASS_RANK)
+final_master_df$CLASS_SIZE = as.numeric(final_master_df$CLASS_SIZE)
+final_master_df$STANDING = as.numeric(final_master_df$STANDING)
+final_master_df$HSGPA = as.numeric(final_master_df$HSGPA)
+final_master_df$C_GPA = as.numeric(final_master_df$C_GPA)
+final_master_df$ACT_COMP =  as.numeric(final_master_df$ACT_COMP)
+final_master_df$ACTENGLISH =  as.numeric(final_master_df$ACTENGLISH)
+final_master_df$ACTMATH = as.numeric(final_master_df$ACTMATH)
+final_master_df$NEW_SAT_MATH = as.numeric(final_master_df$NEW_SAT_MATH)
+final_master_df$NEW_SAT_VERBAL = as.numeric(final_master_df$NEW_SAT_VERBAL)
+final_master_df$P_GPA = as.numeric(final_master_df$P_GPA)
+final_master_df$TUITION = as.numeric(final_master_df$TUITION)
+final_master_df$ROOM = as.numeric(final_master_df$ROOM)
+final_master_df$BOARD = as.numeric(final_master_df$BOARD)
+final_master_df$FEES = as.numeric(final_master_df$FEES)
+final_master_df$AWD_AMT5 = as.numeric(final_master_df$AWD_AMT5)
+final_master_df$AWD_AMT6 = as.numeric(final_master_df$AWD_AMT6)
+final_master_df$AWD_AMT7 = as.numeric(final_master_df$AWD_AMT7)
+final_master_df$AWD_AMT8 = as.numeric(final_master_df$AWD_AMT8)
+final_master_df$AWD_AMT9 = as.numeric(final_master_df$AWD_AMT9)
+final_master_df$AWD_AMT10 = as.numeric(final_master_df$AWD_AMT10)
+final_master_df$STATE_ID = as.numeric(final_master_df$STATE_ID)
+final_master_df$FA2020_term_GPA = as.numeric(final_master_df$FA2020_term_GPA)
+final_master_df$MAJOR_2020FA = as.numeric(final_master_df$MAJOR_2020FA)
+final_master_df$SP2020_term_GPA = as.numeric(final_master_df$SP2020_term_GPA)
+final_master_df$SP2020_cumulative_GPA = as.numeric(final_master_df$SP2020_cumulative_GPA)
+final_master_df$SP2021_cumulative_GPA = as.numeric(final_master_df$SP2021_cumulative_GPA)
+```
+
+
+```{r}
+library(tidyverse)
+library(readxl)
+#library(dplyr)
+
+
+# ## Rename GPA variables
+# final_master_df <- final_master_df %>%
+#   rename(FA2019_term_GPA = `2019FA term GPA`,
+#          FA2020_term_GPA = `2020FA term GPA`,
+#          FA2021_term_GPA = `2021FA term GPA`,
+#          SP2020_term_GPA = `2020SP term GPA`,
+#          SP2021_term_GPA = `2021SP term GPA`,
+#          FA2019_cumulative_GPA = `2019FA cumulative GPA`,
+#          FA2020_cumulative_GPA = `2020FA cumulative GPA`,
+#          FA2021_cumulative_GPA = `2021FA cumulative GPA`,
+#          SP2020_cumulative_GPA = `2020SP cumulative GPA`,
+#          SP2021_cumulative_GPA = `2021SP GPA`,
+#          SP2022_cumulative_GPA = `2022SP cumulative GPA`)
+
+
+## Create first term GPA by finding the first non-NA GPA among the semesters
+# This is my own function to look at a vector of semester grades (in order by semester)
+# and report the first non-NA value
+first_term <- function(fa2019,fa2020,fa2021,sp2020,sp2021){
+  first(na.omit(c(fa2019,sp2020,fa2020,sp2021,fa2021)))
+}
+
+final_master_df <- final_master_df %>%
+  mutate(SP2020_term_GPA = as.numeric(SP2020_term_GPA),       # convert from character to numeric
+         FA2020_term_GPA = as.numeric(FA2020_term_GPA),
+         SP2021_term_GPA = as.numeric(SP2021_term_GPA)) %>%
+  rowwise() %>%                                               # applies functions across rows
+  mutate(first_term_gpa = first_term(FA2019_term_GPA,         # applies my function from above
+                                     FA2020_term_GPA,
+                                     FA2021_term_GPA,
+                                     SP2020_term_GPA,
+                                     SP2021_term_GPA)) %>%
+  ungroup()                                                   # removes the "rowwise" grouping
+
+
+
+## Create first year (cumulative) GPA by finding the first non-NA cumulative GPA among the semesters
+# This is my own function to look at a vector of cumulative grades (in order by semester)
+# and report the last non-na value
+first_year <- function(fa2019,fa2020,fa2021,sp2020,sp2021){
+  obs1 <- first(na.omit(c(fa2019,sp2020,fa2020,sp2021,fa2021)))
+  obs2 <- last(na.omit(c(fa2019,sp2020,fa2020,sp2021,fa2021)))
+  ifelse(is.na(obs2),obs1,obs2)
+}
+
+
+
+final_master_df <- final_master_df %>%
+  mutate(SP2020_cumulative_GPA = as.numeric(SP2020_cumulative_GPA),     # convert to numeric
+         SP2021_cumulative_GPA = as.numeric(SP2021_cumulative_GPA)) %>%
+  rowwise() %>%                                                         # apply functions row-wise
+  mutate(first_year_gpa = first_year(FA2019_cumulative_GPA,             # apply my function
+                                     FA2020_cumulative_GPA,
+                                     FA2021_cumulative_GPA,
+                                     SP2020_cumulative_GPA,
+                                     SP2021_cumulative_GPA)) %>%
+  ungroup()                                                             # remove rowwise grouping /////
+
+
+
+
+
+# final_master_df <- final_master_df %>%
+#   rename(FA2019_D_midterm = "2019FA D's at midterm",
+#          FA2019_F_midterm = "2019FA F's at midterm",
+#          FA2020_D_midterm = "2020FA D's at midterm",
+#          FA2020_F_midterm = "2020FA F's at midterm",
+#          SP2020_D_midterm = "2020SP D's at midterm",
+#          SP2020_F_midterm = "2020SP F's at midterm",
+#          FA2021_D_midterm = "2021FA D's at midterm",
+#          FA2021_F_midterm = "2021FA F's at midterm",
+#          SP2021_D_midterm = "2021SP D's at midterm",
+#          SP2021_F_midterm = "2021SP F's at midterm",)
+
+final_master_df <- final_master_df %>%
+  mutate(FA2019_D_midterm = as.numeric(FA2019_D_midterm),     
+         FA2019_F_midterm = as.numeric(FA2019_F_midterm),
+         FA2020_D_midterm = as.numeric(FA2020_D_midterm),
+         FA2020_F_midterm = as.numeric(FA2020_F_midterm),
+         SP2020_D_midterm = as.numeric(SP2020_D_midterm),
+         SP2020_F_midterm = as.numeric(SP2020_F_midterm),
+         FA2021_D_midterm = as.numeric(FA2021_D_midterm),
+         FA2021_F_midterm = as.numeric(FA2021_F_midterm),
+         SP2021_D_midterm = as.numeric(SP2021_D_midterm),
+         SP2021_F_midterm = as.numeric(SP2021_F_midterm)) %>% #convert to numeric
+  rowwise() %>%                                                         # apply functions row-wise
+  mutate(D_midterm = first_term(FA2019_D_midterm,             # apply my function
+                                     FA2020_D_midterm,
+                                     SP2020_D_midterm,
+                                     FA2021_D_midterm,
+                                    SP2021_D_midterm)) %>%
+  ungroup()  
+
+ # rowwise() %>%                                                         # apply functions row-wise
+#  mutate(F_midterm = first_term(FA2019_F_midterm,             # apply my function
+                                  #   FA2020_F_midterm,
+                                   #  SP2020_F_midterm,
+                                   #  FA2021_F_midterm,
+                                   # SP2021_F_midterm)) %>%
+  #ungroup() 
+
+final_master_df = final_master_df %>%
+  mutate(D_midterm = first_year(FA2019_D_midterm,             # apply my function
+                                     FA2020_D_midterm,
+                                     SP2020_D_midterm,
+                                     FA2021_D_midterm,
+                                    SP2021_D_midterm)) %>% 
+  ungroup()  
+
+ # rowwise() %>%                                                         # apply functions row-wise
+final_master_df = final_master_df %>%
+  mutate(F_midterm = first_year(FA2019_F_midterm,             # apply my function
+                                     FA2020_F_midterm,
+                                     SP2020_F_midterm,
+                                     FA2021_D_midterm,
+                                    SP2021_F_midterm)) %>% 
+  ungroup() 
+```
+
+```{r}
+SAT_Math_vec = c()
+for(i in 1:length(final_master_df$NEW_SAT_MATH)) {           
+  my_out <- if(is.na(final_master_df$NEW_SAT_MATH[i])) {
+    print("1")
+  }
+  else {
+    print("0")
+  }
+  SAT_Math_vec <- c(SAT_Math_vec, my_out)
+}
+
+table(SAT_Math_vec)
+```
+```{r}
+SAT_Comp_vec = c()
+for(i in 1:length(final_master_df$NEW_SAT_COMP)) {           
+  my_out <- if(is.na(final_master_df$NEW_SAT_COMP[i])) {
+    print("1")
+  }
+  else {
+    print("0")
+  }
+  SAT_Comp_vec <- c(SAT_Comp_vec, my_out)
+}
+table(SAT_Comp_vec)
+```
+
+```{r}
+SAT_Verbal_vec = c()
+for(i in 1:length(final_master_df$NEW_SAT_VERBAL)) {          
+  my_out <- if(is.na(final_master_df$NEW_SAT_VERBAL[i])) {
+    print("1")
+  }
+  else {
+    print("0")
+  }
+  SAT_Verbal_vec <- c(SAT_Verbal_vec, my_out)
+}
+table(SAT_Verbal_vec)
+```
+
+```{r}
+ACT_Math_vec = c()
+for(i in 1:length(final_master_df$ACTMATH)) {           
+  my_out <- if(is.na(final_master_df$ACTMATH[i])) {
+    print("1")
+  }
+  else {
+    print("0")
+  }
+  ACT_Math_vec <- c(ACT_Math_vec, my_out)
+}
+table(ACT_Math_vec)
+```
+
+```{r}
+ACT_English_vec = c()
+for(i in 1:length(final_master_df$ACTENGLISH)) {           
+  my_out <- if(is.na(final_master_df$ACTENGLISH[i])) {
+    print("1")
+  }
+  else {
+    print("0")
+  }
+  ACT_English_vec <- c(ACT_English_vec, my_out)
+}
+table(ACT_English_vec)
+```
+
+```{r}
+ACT_Comp_vec = c()
+for(i in 1:length(final_master_df$ACT_COMP)) {           
+  my_out <- if(is.na(final_master_df$ACT_COMP[i])) {
+    print("1")
+  }
+  else {
+    print("0")
+  }
+  ACT_Comp_vec <- c(ACT_Comp_vec, my_out)
+}
+table(ACT_Comp_vec)
+```
+
+```{r}
+#old ifelse statements
+for(i in 1:length(final_master_df$NEW_SAT_COMP)) {
+  if(is.na(final_master_df$NEW_SAT_COMP[i])) {
+    print("1")
+  }
+  else {
+    print("0")
+  }
+}
+
+for(i in 1:length(final_master_df$NEW_SAT_MATH)) {
+  if(is.na(final_master_df$NEW_SAT_MATH[i])) {
+    print("1")
+  }
+  else {
+    print("0")
+  }
+}
+
+for(i in 1:length(final_master_df$NEW_SAT_VERBAL)) {
+  if(is.na(final_master_df$NEW_SAT_VERBAL[i])) {
+    print("1")
+  }
+  else {
+    print("0")
+  }
+}
+
+
+for(i in 1:length(final_master_df$ACT_COMP)) {
+  if(is.na(final_master_df$ACT_COMP[i])) {
+    print("1")
+  }
+  else {
+    print("0")
+  }
+}
+
+for(i in 1:length(final_master_df$ACTMATH)) {
+  if(is.na(final_master_df$ACTMATH[i])) {
+    print("1")
+  }
+  else {
+    print("0")
+  }
+}
+
+for(i in 1:length(final_master_df$ACTENGLISH)) {
+  if(is.na(final_master_df$ACTENGLISH[i])) {
+    print("1")
+  }
+  else {
+    print("0")
+  }
+}
+```
+
+```{r}
+#final_master_df <- final_master_df[-c(11), ]
+sum(nrow(final_master_df))
+#add back in
+```
+
+
+```{r}
+library(dplyr)
+fall_term_subset = subset(x = final_master_df, select = c(FA2019_term_GPA, FA2020_term_GPA, FA2021_term_GPA))
+#head(fall_term_subset)
+first_term_GPA = apply(fall_term_subset, MARGIN = 1, FUN = function(x) first(na.omit(x)))
+#print(first_term_GPA) 
+sum(is.na(first_term_GPA))
+# The one NA value that was left after doing doing this (found in row 11), was truly an NA for every fall term, so we removed this single row. This is done in the code block above.
+```
+
+
+```{r}
+spring_term_subset = subset(x = final_master_df, select = c(SP2020_term_GPA, SP2021_term_GPA))
+#head(spring_term_subset)
+first_term_cumulative = apply(spring_term_subset, MARGIN = 1, FUN = function(x) first(na.omit(x)))
+#print(spring_term_GPA)
+sum(is.na(first_term_cumulative))
+# ???
+#Due to COVID-19, there are numerous NA's for the SP2020 semester since we were offered to  do classes as pass/ fail.  unsure what to do in this instance.
+```
+
+
+```{r}
+first_year_subset = subset(x = final_master_df, select = c(SP2020_cumulative_GPA, FA2019_cumulative_GPA, FA2020_cumulative_GPA, FA2021_cumulative_GPA, SP2021_GPA))
+first_year_cumulative = apply(first_year_subset , MARGIN = 1, FUN = function(x) first(na.omit(x)))
+sum(is.na(first_year_cumulative))
+```
+
+
+```{r}
+#sum(ncol(final_master_df))
+final_master_df <- final_master_df[ , -c(75, 76, 81, 82, 88, 92, 93, 99)]
+sum(ncol(final_master_df))
+# Did not remove spring terms.
+```
+
+
+```{r}
+library(dplyr)
+final_master_df$first_term_GPA <- first_term_GPA
+final_master_df$first_year_cumulative <- first_year_cumulative
+final_master_df$first_term_cumulative <- first_term_cumulative
+sum(ncol(final_master_df))
+# Did not add spring terms.
+```
+
+
+```{r}
+print(final_master_df$Standing_2019FA)
+#final_master_df$Standing_2019FA = ('withdrew', 'suspended', 'dismissed', 'graduated')
+# ????
+#2022 SP deleted
+```
+
+
+```{r}
+for (i in final_master_df$enrollment_status)
+  if i == "withdrew (returned later)",
+    replace(final_master_df$enrollment_status, nrow(final_master_df$enrollment_status), "enrolled")
+```
+
+
+```{r}
+replaced_df = data.frame(from = c("withdrew (returned later)"), to = c("ppppppppp"))
+
+replaced_df = FindReplace(data = final_master_df, Var = "withdrew (returned later)", 
+                          replaceData = Replaces,
+                     from = "from", to = "to", exact = FALSE)
+```
+
+
+```{r}
+sub('withdrew (returned later)','is this working',final_master_df$enrollment_status)
+```
+
+
+EDA
+- fix the rest of cleaning
+- tabulating NA's
+- status withdrawn equal to # missing grades for that semester
+- summary stats
+- first term gpa
+- first year gpa
+- cumulative gpa
+- graphs for scores vs. no scores
+  - percent withdrew
+  - change in major
+  - GPA
+- proportions
+- bar charts
+- side by side box plots
+- gender
+- intended major
+```{r}
+> cyl4 = mtcars$mpg[which(mtcars$cyl==4)]
+ > cyl8 = mtcars$mpg[which(mtcars$cyl==8)]
+ > par(mfrow=c(1,2))
+ > boxplot(cyl4)
+ > boxplot(cyl8)
+ > par(mfrow=c(1,1))
+ > boxplot(cyl4,cyl8,
+ +         main = "4 cylinders versus 8 cylinders",
+ +         ylab = "Miles per gallon",
+ +         names = c("4 cylinders", "8 cylinders"))
+```
+
+```{r}
+counts <- table(final_master_df$enrollment_status)
+barplot(counts, main="Enrollment Status",
+   xlab="Enrollment Status")
+
+counts <- table(final_master_df$MAJOR_2019FA)
+barplot(counts, main="2019 Major",
+   xlab="2019 Major")
+
+counts <- table(final_master_df$MAJOR_2020FA)
+barplot(counts, main="2020 Major",
+   xlab="2020 Major")
+
+counts <- table(final_master_df$MAJOR_2021FA)
+barplot(counts, main="2021 Major",
+   xlab="2021 Major")
+```
+```{r}
+counts <- table(final_master_df$DEPT1_ADMIT)
+barplot(counts, main="SVC School",
+   xlab="SVC School")
+
+counts <- table(final_master_df$TRANSFER)
+barplot(counts, main="Transfer Students",
+   xlab="Transfer Students")
+
+counts <- table(final_master_df$HS_ID)
+barplot(counts, main="High School",
+   xlab="High School")
+
+counts <- table(final_master_df$RESIDENT)
+barplot(counts, main="Resident",
+   xlab="Resident")
+```
+```{r}
+hist(final_master_df$D_midterm)
+hist(final_master_df$F_midterm)
+```
+```{r}
+summary(final_master_df$first_term_gpa)
+summary(final_master_df$first_year_gpa)
+summary(final_master_df$NEW_SAT_MATH)
+summary(final_master_df$NEW_SAT_VERBAL)
+summary(final_master_df$ACT_COMP)
+summary(final_master_df$ACTENGLISH)
+summary(final_master_df$ACTMATH)
+```
+```{r}
+library(ggplot2)
+
+library(dplyr)
+library(ggplot2)
+
+ggplot(data=final_master_df) +
+geom_histogram(mapping = aes(first_term_GPA),
+breaks=seq(0, 100, by = 5), col="dark green", fill="light green") +
+(mapping = aes(x=first_term_GPA, y = (..count..))) +
+labs(title="First Term GPA",
+x="First Term GPA")
+```
+```{r}
+library(dplyr)
+library(ggplot2)
+ggplot(final_master_df,aes(x = first_term_GPA)) +
+  geom_histogram() +
+  facet_wrap(~GENDER,ncol = 2)
+
+ggplot(final_master_df,aes(x = first_year_gpa)) +
+  geom_histogram() +
+  facet_wrap(~GENDER,ncol = 2)
+
+```
+
+```{r}
+ggplot(final_master_df,aes(x = first_term_GPA)) +
+  geom_histogram() +
+  facet_wrap(~ATHLETE,ncol = 2)
+```
+```{r}
+ggplot(final_master_df,aes(x = first_year_gpa)) +
+  geom_histogram() +
+  facet_wrap(~ATHLETE,ncol = 2)
+```
+
+```{r}
+ggplot(final_master_df,aes(x = NEW_SAT_MATH)) +
+  geom_histogram() +
+  facet_wrap(~GENDER,ncol = 2)
+
+ggplot(final_master_df,aes(x = NEW_SAT_VERBAL)) +
+  geom_histogram() +
+  facet_wrap(~GENDER,ncol = 2)
+
+ggplot(final_master_df,aes(x = ACTMATH)) +
+  geom_histogram() +
+  facet_wrap(~GENDER,ncol = 2)
+
+ggplot(final_master_df,aes(x = ACTENGLISH)) +
+  geom_histogram() +
+  facet_wrap(~GENDER,ncol = 2)
+
+ggplot(final_master_df,aes(x = ACT_COMP)) +
+  geom_histogram() +
+  facet_wrap(~GENDER,ncol = 2)
+```
+
+```{r}
+ggplot(final_master_df,aes(x = CLASS_RANK)) +
+  geom_histogram() +
+  facet_wrap(~GENDER,ncol = 2)
+```
+
+```{r}
+boxplot(final_master_df$CLASS_SIZE)
+
+```
+
+```{r}
+
+final_master_df %>% count(NEW_SAT_MATH)
+final_master_df %>% count(NEW_SAT_VERBAL)
+final_master_df %>% count(NEW_SAT_COMP)
+final_master_df %>% count(ACT_COMP)
+final_master_df %>% count(ACTENGLISH)
+final_master_df %>% count(ACTMATH)
+```
+
+
+```{r}
+reported_scores = sample(x = c('yes', 'N/A'), size = 1166, replace = TRUE)
+reported_scores
+NEW_SAT_MATH = ifelse(reported_scores == 'N/A', NA, NEW_SAT_MATH)
+NEW_SAT_MATH
+
+reported_scores = as.numeric(reported_scores)
+hist(reported_scores, breaks = 2)
+```
+
+```{r}
+final_master_df$first_term = is.numeric(final_master_df$first_term)
+
+ggplot(final_master_df,aes(x = first_term)) +
+  geom_histogram() +
+  facet_wrap(~GENDER,ncol = 2)
+
+```
+
+- still can not fix FA2019_F_midterm
+- For graphs: variables are not there when we used them right above but then work again for other code
+      - happens for SATCOMP, term, year, and cumulative variables
+- reported scores also not working
+
