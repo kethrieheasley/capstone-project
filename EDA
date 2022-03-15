@@ -30,13 +30,6 @@ academic_df = read_excel('Academic+Record+Data+-+Student+Copy.xlsx')
 master_df = merge.data.frame(admissions_df, academic_df, by.x = 'ID', by.y = 'ID')
 ```
 
-
-```{r}
-length(unique(master_df$ID))== nrow(master_df)
-# no duplicates
-```
-
-
 ```{r}
 new_master_df = subset(master_df, select = -c(INST_CODE,CONCENTRATION, CONT_TI, CONT_SI, CONT_CI, CONT_AI, CONT_TE, CONT_CUML, OREN_SESS...29, MODEL_SCORE, SITE_CD, FLAG_LEGACY, FLAG_EARLY_ADM, FLAG_E_DECISION, DEPT2_ADMIT, GRADUATEDEGREE, GRADUATEDEGREEATTRIBUTE, INST_RAT, OTHERTESTSCORE1, OTHERTESTSCORE2, TEST_MATH, TEST_READING, TEST_ENGLISH, TEST_OTHER, FLAG_EST_EFC, HOUSING_FINANCIALAID, EFC_12_MONTH, ISIR_STATUS, FLAG_ISIR_VALID, PLUS_DENIAL, ISIR_STATE, ISIR_GENDER, ISIR_GRADE_LVL, ISIR_HSDIPLOMA_OR_GED, ISIR_DEGREE_CERT, FLAG_ISIR_FIRST_BACHELORS, FLAG_ISIR_MASTERS_DOCTORATE, ISIR_MOTHER_ED_LVL, ISIR_FATHER_ED_LVL, ISIR_NUMBER_IN_HOUSEHOLD, ISIR_NUMBER_IN_COLLEGE, FLAG_AWARD_SIGNED, DATE_AWARD_SIGNED, AWD_REACT, OTHER_CHGS, FLAG_PERFORMANCE, FLAG_EARLY_AID, FLAG_INSTATE, TUITION_ELIGIBILITY, FLAG_INSTITUTIONAL_PROFILE, DATE_INSTITUTIONAL_PROFILE, INSTITUTIONAL_FC, INSTITUTIONAL_TOTAL_INCOME, INSTITUTIONAL_PARENT_INCOME, INSTITUTIONAL_STUDENT_INCOME, AWD_STATUS1, AWD_STATUS2, AWD_STATUS3,AWD_STATUS4, AWD_STATUS5, AWD_STATUS6, AWD_STATUS7, AWD_STATUS8, AWD_STATUS9, AWD_STATUS10, AWD_STATUS11, AWD_STATUS12, AWD_STATUS13, AWD_STATUS14, AWD_STATUS15, AWD_STATUS16, AWD_STATUS17, AWD_CD11, AWD_CD12, AWD_CD13, AWD_CD14, AWD_CD15, AWD_CD16,AWD_CD17, AWD_AMT11, AWD_AMT12, AWD_AMT13, AWD_AMT14, AWD_AMT15, AWD_AMT16, AWD_AMT17, AWD_STATUS18, AWD_STATUS19, AWD_STATUS20, AWD_CD18, AWD_CD19, AWD_CD20, AWD_AMT18, AWD_AMT19, AWD_AMT20, USERDEF01, USERDEF02, USERDEF03, USERDEF04, USERDEF05, USERDEF06, USERDEF07, USERDEF08, USERDEF09, USERDEF10, USERDEF11, USERDEF12, USERDEF13, USERDEF14, USERDEF15, USERDEF16, USERDEF17, USERDEF18, USERDEF18, USERDEF19, USERDEF20, USERDEF21, USERDEF22, USERDEF23, USERDEF24, USERDEF25, FLAG_PERS_TERM, FLAG_PERS_YEAR, FS_GPA, FF_GPA, FLAG_PERS_OTHER1, FLAG_PERS_OTHER1, CUM_GPA_OTHER1, CUM_GPA_OTHER2, ENR_COLLEGE, ENR_CLEARINGHOUSE, DEPT1_ENROLLED, DEPT2_ENROLLED, ADVISOR, WORKING_HOURS, SECTION, RESIDENCE_HALL, HOURS_ATTEMPTED, HOURS_COMPLETED, CLASS, OREN_SESS...208, OREN_SESS...209, MAJOR1_ENROLLED_ID, MAJOR2_ENROLLED_ID, MAJOR2_ADMIT_ID, HOURS_CUMULATIVE, FLAG_PERS_OTHER2, HS_GRAD_YR, ACTREADING, ACTSCIENCE, ACTWRITTEN))
 ```
@@ -210,14 +203,15 @@ final_master_df <- final_master_df %>%
                                      FA2021_D_midterm,
                                     SP2021_D_midterm)) %>%
   ungroup()  
-
- # rowwise() %>%                                                         # apply functions row-wise
-#  mutate(F_midterm = first_term(FA2019_F_midterm,             # apply my function
-                                  #   FA2020_F_midterm,
-                                   #  SP2020_F_midterm,
-                                   #  FA2021_F_midterm,
-                                   # SP2021_F_midterm)) %>%
-  #ungroup() 
+                                                        # apply functions row-wise
+final_master_df = final_master_df %>%
+   rowwise() %>% 
+ mutate(F_midterm = first_term(FA2019_F_midterm,             # apply my function
+                                    FA2020_F_midterm,
+                                    SP2020_F_midterm,
+                                    FA2021_F_midterm,
+                                    SP2021_F_midterm)) %>%
+  ungroup() 
 
 final_master_df = final_master_df %>%
   mutate(D_midterm = first_year(FA2019_D_midterm,             # apply my function
@@ -241,148 +235,111 @@ final_master_df = final_master_df %>%
 SAT_Math_vec = c()
 for(i in 1:length(final_master_df$NEW_SAT_MATH)) {           
   my_out <- if(is.na(final_master_df$NEW_SAT_MATH[i])) {
-    print("1")
+    "0"
   }
   else {
-    print("0")
+    "1"
   }
   SAT_Math_vec <- c(SAT_Math_vec, my_out)
 }
 
 table(SAT_Math_vec)
+# final_master_df %>% 
+#   group_by(SAT_Math_vec) %>%
+#   summarise(percent = 100*n()/nrow(final_master_df))
 ```
 ```{r}
 SAT_Comp_vec = c()
 for(i in 1:length(final_master_df$NEW_SAT_COMP)) {           
   my_out <- if(is.na(final_master_df$NEW_SAT_COMP[i])) {
-    print("1")
+    "0"
   }
   else {
-    print("0")
+    "1"
   }
   SAT_Comp_vec <- c(SAT_Comp_vec, my_out)
 }
 table(SAT_Comp_vec)
+# final_master_df %>% 
+#   group_by(SAT_Comp_vec) %>%
+#   summarise(percent = 100*n()/nrow(final_master_df))
+
 ```
 
 ```{r}
 SAT_Verbal_vec = c()
 for(i in 1:length(final_master_df$NEW_SAT_VERBAL)) {          
   my_out <- if(is.na(final_master_df$NEW_SAT_VERBAL[i])) {
-    print("1")
+    "0"
   }
   else {
-    print("0")
+    "1"
   }
   SAT_Verbal_vec <- c(SAT_Verbal_vec, my_out)
 }
 table(SAT_Verbal_vec)
+# final_master_df %>% 
+#   group_by(SAT_Verbal_vec) %>%
+#   summarise(percent = 100*n()/nrow(final_master_df))
 ```
 
 ```{r}
 ACT_Math_vec = c()
 for(i in 1:length(final_master_df$ACTMATH)) {           
   my_out <- if(is.na(final_master_df$ACTMATH[i])) {
-    print("1")
+    "0"
   }
   else {
-    print("0")
+    "1"
   }
   ACT_Math_vec <- c(ACT_Math_vec, my_out)
 }
 table(ACT_Math_vec)
+# final_master_df %>% 
+#   group_by(ACT_Math_vec) %>%
+#   summarise(percent = 100*n()/nrow(final_master_df))
 ```
 
 ```{r}
 ACT_English_vec = c()
 for(i in 1:length(final_master_df$ACTENGLISH)) {           
   my_out <- if(is.na(final_master_df$ACTENGLISH[i])) {
-    print("1")
+    "0"
   }
   else {
-    print("0")
+    "1"
   }
   ACT_English_vec <- c(ACT_English_vec, my_out)
 }
 table(ACT_English_vec)
+# final_master_df %>% 
+#   group_by(ACT_English_vec) %>%
+#   summarise(percent = 100*n()/nrow(final_master_df))
 ```
 
 ```{r}
 ACT_Comp_vec = c()
 for(i in 1:length(final_master_df$ACT_COMP)) {           
   my_out <- if(is.na(final_master_df$ACT_COMP[i])) {
-    print("1")
+    "0"
   }
   else {
-    print("0")
+    "1"
   }
   ACT_Comp_vec <- c(ACT_Comp_vec, my_out)
 }
 table(ACT_Comp_vec)
+# final_master_df %>% 
+#   group_by(ACT_Comp_vec) %>%
+#   summarise(percent = 100*n()/nrow(final_master_df))
 ```
-
 ```{r}
-#old ifelse statements
-for(i in 1:length(final_master_df$NEW_SAT_COMP)) {
-  if(is.na(final_master_df$NEW_SAT_COMP[i])) {
-    print("1")
-  }
-  else {
-    print("0")
-  }
-}
-
-for(i in 1:length(final_master_df$NEW_SAT_MATH)) {
-  if(is.na(final_master_df$NEW_SAT_MATH[i])) {
-    print("1")
-  }
-  else {
-    print("0")
-  }
-}
-
-for(i in 1:length(final_master_df$NEW_SAT_VERBAL)) {
-  if(is.na(final_master_df$NEW_SAT_VERBAL[i])) {
-    print("1")
-  }
-  else {
-    print("0")
-  }
-}
-
-
-for(i in 1:length(final_master_df$ACT_COMP)) {
-  if(is.na(final_master_df$ACT_COMP[i])) {
-    print("1")
-  }
-  else {
-    print("0")
-  }
-}
-
-for(i in 1:length(final_master_df$ACTMATH)) {
-  if(is.na(final_master_df$ACTMATH[i])) {
-    print("1")
-  }
-  else {
-    print("0")
-  }
-}
-
-for(i in 1:length(final_master_df$ACTENGLISH)) {
-  if(is.na(final_master_df$ACTENGLISH[i])) {
-    print("1")
-  }
-  else {
-    print("0")
-  }
-}
-```
-
-```{r}
-#final_master_df <- final_master_df[-c(11), ]
-sum(nrow(final_master_df))
-#add back in
+final_master_df$ACT_Comp_vec = ACT_Comp_vec
+final_master_df$ACT_Math_vec = ACT_Math_vec
+final_master_df$ACT_English_vec = ACT_English_vec
+final_master_df$SAT_Math_vec = SAT_Math_vec
+final_master_df$SAT_Verbal_vec = SAT_Verbal_vec
+final_master_df$SAT_Comp_vec = SAT_Comp_vec
 ```
 
 
@@ -431,37 +388,6 @@ final_master_df$first_term_cumulative <- first_term_cumulative
 sum(ncol(final_master_df))
 # Did not add spring terms.
 ```
-
-
-```{r}
-print(final_master_df$Standing_2019FA)
-#final_master_df$Standing_2019FA = ('withdrew', 'suspended', 'dismissed', 'graduated')
-# ????
-#2022 SP deleted
-```
-
-
-```{r}
-for (i in final_master_df$enrollment_status)
-  if i == "withdrew (returned later)",
-    replace(final_master_df$enrollment_status, nrow(final_master_df$enrollment_status), "enrolled")
-```
-
-
-```{r}
-replaced_df = data.frame(from = c("withdrew (returned later)"), to = c("ppppppppp"))
-
-replaced_df = FindReplace(data = final_master_df, Var = "withdrew (returned later)", 
-                          replaceData = Replaces,
-                     from = "from", to = "to", exact = FALSE)
-```
-
-
-```{r}
-sub('withdrew (returned later)','is this working',final_master_df$enrollment_status)
-```
-
-
 EDA
 - fix the rest of cleaning
 - tabulating NA's
@@ -480,16 +406,88 @@ EDA
 - gender
 - intended major
 ```{r}
-> cyl4 = mtcars$mpg[which(mtcars$cyl==4)]
- > cyl8 = mtcars$mpg[which(mtcars$cyl==8)]
- > par(mfrow=c(1,2))
- > boxplot(cyl4)
- > boxplot(cyl8)
- > par(mfrow=c(1,1))
- > boxplot(cyl4,cyl8,
- +         main = "4 cylinders versus 8 cylinders",
- +         ylab = "Miles per gallon",
- +         names = c("4 cylinders", "8 cylinders"))
+final_master_df$has_SAT <- paste(final_master_df$SAT_Comp_vec,final_master_df$SAT_Math_vec, final_master_df$SAT_Verbal_vec)
+print(final_master_df$has_SAT)
+
+has_SAT_vec = rep(NA, 1166)
+for(i in 1:length(final_master_df$has_SAT)) {           
+   if(final_master_df$has_SAT[i] == "0 0 0") {
+    has_SAT_vec[i] = "0"
+  }
+  else {
+    has_SAT_vec[i] = "1"
+  }
+}
+#print(has_SAT_vec)
+final_master_df$has_SAT_vec = has_SAT_vec
+table(final_master_df$has_SAT_vec, final_master_df$ACADEMICYEARANDTERM)
+```
+
+```{r}
+final_master_df$has_ACT <- paste(final_master_df$ACT_Comp_vec,final_master_df$ACT_Math_vec, final_master_df$ACT_English_vec)
+#print(final_master_df$has_ACT)
+
+has_ACT_vec = rep(NA, 1166)
+for(i in 1:length(final_master_df$has_ACT)) {           
+  if(final_master_df$has_ACT[i] == "0 0 0") {
+    has_ACT_vec[i] = "0"
+  }
+  else {
+    has_ACT_vec[i] = "1"
+  }
+}
+#print(has_ACT_vec)
+final_master_df$has_ACT_vec = has_ACT_vec
+table(final_master_df$has_ACT_vec, final_master_df$ACADEMICYEARANDTERM)
+```
+
+```{r}
+final_master_df$has_test_score <- paste(final_master_df$has_SAT_vec,final_master_df$has_ACT_vec)
+table(final_master_df$has_test_score, final_master_df$ACADEMICYEARANDTERM)
+has_test_score = ifelse(final_master_df$has_test_score == '0 0', '0', '1')
+final_master_df$has_test_score = has_test_score
+
+ggplot(final_master_df,aes(x = as.numeric(first_year_cumulative))) +
+  geom_density(aes(by = has_test_score))
+  #facet_wrap(~has_test_score,ncol = 2)
+
+#withdrew vs. has test score
+#D's and F's vs. has test score
+#Gender vs. has test score
+#loans and financial ad vs. has test score
+#pell elidigable vs. has test score
+```
+
+```{r}
+#failed attempts
+# ggplot(final_master_df, aes(x= has_SAT_vec, y = GENDER)) + geom_bar(stat = 'identity')
+# library(dplyr)
+# library(ggplot2)
+# final_master_df$has_SAT_vec = is.numeric(final_master_df$has_SAT_vec)
+# ggplot(final_master_df,aes(x = has_SAT_vec)) +
+#   geom_histogram() +
+#   facet_wrap(~GENDER,ncol = 2)
+
+# final_master_df %>%
+#   ggplot(mapping = aes(x = has_SAT_vec, y = GENDER))
+# + geom_col()
+```
+
+```{r}
+table(final_master_df$GENDER, final_master_df$has_SAT)
+#can't get has_SAT_vec to run
+```
+
+```{r}
+table(final_master_df$GENDER, final_master_df$has_ACT)
+#can't get has_ACT_vec to run
+```
+
+```{r}
+# ggplot(final_master_df,aes(x = first_year_cumulative)) +
+#   geom_histogram() +
+#   facet_wrap(~has_SAT,ncol= 2)
+#Cannot get this to run
 ```
 
 ```{r}
@@ -527,10 +525,6 @@ barplot(counts, main="Resident",
    xlab="Resident")
 ```
 ```{r}
-hist(final_master_df$D_midterm)
-hist(final_master_df$F_midterm)
-```
-```{r}
 summary(final_master_df$first_term_gpa)
 summary(final_master_df$first_year_gpa)
 summary(final_master_df$NEW_SAT_MATH)
@@ -539,19 +533,7 @@ summary(final_master_df$ACT_COMP)
 summary(final_master_df$ACTENGLISH)
 summary(final_master_df$ACTMATH)
 ```
-```{r}
-library(ggplot2)
 
-library(dplyr)
-library(ggplot2)
-
-ggplot(data=final_master_df) +
-geom_histogram(mapping = aes(first_term_GPA),
-breaks=seq(0, 100, by = 5), col="dark green", fill="light green") +
-(mapping = aes(x=first_term_GPA, y = (..count..))) +
-labs(title="First Term GPA",
-x="First Term GPA")
-```
 ```{r}
 library(dplyr)
 library(ggplot2)
@@ -560,6 +542,11 @@ ggplot(final_master_df,aes(x = first_term_GPA)) +
   facet_wrap(~GENDER,ncol = 2)
 
 ggplot(final_master_df,aes(x = first_year_gpa)) +
+  geom_histogram() +
+  facet_wrap(~GENDER,ncol = 2)
+```
+```{r}
+ggplot(final_master_df,aes(x = FA2019_F_midterm)) +
   geom_histogram() +
   facet_wrap(~GENDER,ncol = 2)
 
@@ -621,21 +608,15 @@ final_master_df %>% count(ACTMATH)
 
 
 ```{r}
-reported_scores = sample(x = c('yes', 'N/A'), size = 1166, replace = TRUE)
-reported_scores
-NEW_SAT_MATH = ifelse(reported_scores == 'N/A', NA, NEW_SAT_MATH)
-NEW_SAT_MATH
+final_master_df$first_term = is.numeric(final_master_df$first_term_gpa)
 
-reported_scores = as.numeric(reported_scores)
-hist(reported_scores, breaks = 2)
-```
-
-```{r}
-final_master_df$first_term = is.numeric(final_master_df$first_term)
-
-ggplot(final_master_df,aes(x = first_term)) +
+ggplot(final_master_df,aes(x = first_term_gpa)) +
   geom_histogram() +
   facet_wrap(~GENDER,ncol = 2)
+
+# ggplot(final_master_df,aes(x = NEW_SAT_COMP)) +
+#   geom_histogram() +
+#   facet_wrap(~GENDER,ncol = 2)
 
 ```
 
@@ -643,4 +624,3 @@ ggplot(final_master_df,aes(x = first_term)) +
 - For graphs: variables are not there when we used them right above but then work again for other code
       - happens for SATCOMP, term, year, and cumulative variables
 - reported scores also not working
-
