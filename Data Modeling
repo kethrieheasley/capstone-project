@@ -1,1 +1,97 @@
+title: "Model Summary"
+author: "Kim Weinman"
+date: "3/30/2022"
+output: pdf_document
+---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+load("~/Masterdf.RData")
+```
+
+#1. What demographic variables help predict whether or not someone will report a test score? (This can help indicate what should/shouldn't be involved in the admissions and financial aid process).
+
+#Class Rank
+```{r}
+library(caTools)
+set.seed(123)
+split = sample.split(final_master_df$has_test_score, SplitRatio = 0.75)
+training_set = subset(final_master_df, split == TRUE)
+test_set = subset(final_master_df, split == FALSE)
+
+final_master_df$has_test_score = as.numeric(final_master_df$has_test_score)
+
+# Fitting Logistic Regression to the Training set
+classifier = glm(formula = has_test_score ~ CLASS_RANK,
+                 family = binomial, 
+                 data = training_set)
+
+
+# Predicting the Test set results
+prob_pred = predict(classifier, type = 'response', newdata = test_set)
+y_pred = ifelse(prob_pred > 0.5, 1, 0)
+
+print(classifier)
+# Making the Confusion Matrix
+install.packages('caret')
+library(caret)
+#confusionMatrix(test_set$has_test_score, y_pred)
+
+
+# Making the Confusion Matrix
+#cm = table(test_set[, -109], y_pred)
+```
+
+```{r}
+library(caret)
+library(InformationValue)
+library(ISLR)
+library(caTools)
+set.seed(123)
+split = sample.split(final_master_df$has_test_score, SplitRatio = 0.75)
+training_set = subset(final_master_df, split == TRUE)
+test_set = subset(final_master_df, split == FALSE)
+
+final_master_df$has_test_score = as.numeric(final_master_df$has_test_score)
+
+# Fitting Logistic Regression to the Training set
+classifier = glm(formula = has_test_score ~ ATHLETE,
+                 family = binomial, 
+                 data = training_set)
+
+predicted <- predict(classifier, final_master_df, type="response")
+
+#convert defaults from "Yes" and "No" to 1's and 0's
+final_master_df$ATHLETE <- ifelse(final_master_df$ATHLETE=="Yes", 1, 0)
+
+#find optimal cutoff probability to use to maximize accuracy
+optimal <- optimalCutoff(final_master_df$ATHLETE, predicted)[1]
+
+#create confusion matrix
+confusionMatrix(final_master_df$ATHLETE, predicted)
+
+#calculate sensitivity
+sensitivity(test$default, predicted)
+
+[1] 0.3786408
+
+#calculate specificity
+specificity(test$default, predicted)
+# # Predicting the Test set results
+# prob_pred = predict(classifier, type = 'response', newdata = test_set)
+# y_pred = ifelse(prob_pred > 0.5, 1, 0)
+# 
+# print(classifier)
+# 
+# # Making the Confusion Matrix
+# install.packages('caret')
+# library(caret)
+# confusionMatrix(test_set$has_test_score, y_pred)
+# 
+# 
+# # Making the Confusion Matrix
+# cm = table(test_set[, -109], y_pred)
+```
