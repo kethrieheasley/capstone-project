@@ -1,3 +1,4 @@
+---
 title: "Model Summary"
 author: "Kim Weinman"
 date: "3/30/2022"
@@ -14,10 +15,26 @@ load("~/Masterdf.RData")
 
 #1. What demographic variables help predict whether or not someone will report a test score? (This can help indicate what should/shouldn't be involved in the admissions and financial aid process).
 
-#Class Rank
+The variables we want to look at:
+- Class Size
+- Class Rank
+- GPA's - HSGPA
+- D's at Midterm???
+- F's at Midterm???
+- FLAG_PELL_ELIGIBLE
+- FIRST_GENERATION
+- INTEREST1???
+- INTEREST2???
+
+We preformed backwards elimination to decide which variables to keep in the model. 
+
 ```{r}
 library(caTools)
 set.seed(123)
+
+na.omit(final_master_df)
+
+#Class Rank
 split = sample.split(final_master_df$has_test_score, SplitRatio = 0.75)
 training_set = subset(final_master_df, split == TRUE)
 test_set = subset(final_master_df, split == FALSE)
@@ -25,7 +42,7 @@ test_set = subset(final_master_df, split == FALSE)
 final_master_df$has_test_score = as.numeric(final_master_df$has_test_score)
 
 # Fitting Logistic Regression to the Training set
-classifier = glm(formula = has_test_score ~ CLASS_RANK,
+  classifier = glm(formula = has_test_score ~ CLASS_RANK + CLASS_SIZE + FLAG_PELL_ELIGIBLE + HSGPA + FLAG_FIRST_GENERATION,
                  family = binomial, 
                  data = training_set)
 
@@ -36,62 +53,31 @@ y_pred = ifelse(prob_pred > 0.5, 1, 0)
 
 print(classifier)
 # Making the Confusion Matrix
-install.packages('caret')
-library(caret)
-#confusionMatrix(test_set$has_test_score, y_pred)
+# library(caret)
+# confusionMatrix(as.factor(test_set$has_test_score),
+#                 as.factor(y_pred))
 
-
-# Making the Confusion Matrix
-#cm = table(test_set[, -109], y_pred)
 ```
+
+#2. Are there differences in academic outcomes between those students who report and who don't report test scores? (Academic outcomes include things like GPA, D's & F's, retention, etc.)
 
 ```{r}
-library(caret)
-library(InformationValue)
-library(ISLR)
-library(caTools)
-set.seed(123)
-split = sample.split(final_master_df$has_test_score, SplitRatio = 0.75)
-training_set = subset(final_master_df, split == TRUE)
-test_set = subset(final_master_df, split == FALSE)
+library(dplyr)
+has_score = subset(final_master_df$has_test_score, final_master_df$has_test_score == 1)
+no_score = c(final_master_df$has_test_score, final_master_df$has_test_score == 0)
 
-final_master_df$has_test_score = as.numeric(final_master_df$has_test_score)
+final_master_df$ATHLETE = is.numeric(final_master_df$ATHLETE)
+final_master_df$enrollment_status = is.numeric(final_master_df$enrollment_status)
 
-# Fitting Logistic Regression to the Training set
-classifier = glm(formula = has_test_score ~ ATHLETE,
-                 family = binomial, 
-                 data = training_set)
 
-predicted <- predict(classifier, final_master_df, type="response")
 
-#convert defaults from "Yes" and "No" to 1's and 0's
-final_master_df$ATHLETE <- ifelse(final_master_df$ATHLETE=="Yes", 1, 0)
+final_master_df %>% 
+  select(has_test_score,HSGPA,CLASS_RANK,first_term_GPA,first_year_gpa ) %>% 
+  cor(.,use ="complete")
 
-#find optimal cutoff probability to use to maximize accuracy
-optimal <- optimalCutoff(final_master_df$ATHLETE, predicted)[1]
-
-#create confusion matrix
-confusionMatrix(final_master_df$ATHLETE, predicted)
-
-#calculate sensitivity
-sensitivity(test$default, predicted)
-
-[1] 0.3786408
-
-#calculate specificity
-specificity(test$default, predicted)
-# # Predicting the Test set results
-# prob_pred = predict(classifier, type = 'response', newdata = test_set)
-# y_pred = ifelse(prob_pred > 0.5, 1, 0)
-# 
-# print(classifier)
-# 
-# # Making the Confusion Matrix
-# install.packages('caret')
-# library(caret)
-# confusionMatrix(test_set$has_test_score, y_pred)
-# 
-# 
-# # Making the Confusion Matrix
-# cm = table(test_set[, -109], y_pred)
 ```
+
+#3. What factors should be used to award merit-based scholarships (to replace test scores)?
+#Modeling
+  
+  Based off of the Logisitic Regression model and the correlation matrix, we believe that one of the best variables to be considered when awarding merit-based schoalrships (to replace test scores) would be the GPA variables, such as HSGPA and first_term_GPA, and first_year_gpa. Two more variables that should be considered when awarding scholarsips would be FLAG_PELL_ELIGIBLE and FLAG_FIRST_GENERATION.
