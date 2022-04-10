@@ -10,27 +10,25 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-load("~/Masterdf.RData")
+load("~/Final.RData")
 ```
 
 #1. What demographic variables help predict whether or not someone will report a test score? (This can help indicate what should/shouldn't be involved in the admissions and financial aid process).
 
-The variables we want to look at:
+The demographic variables that we want to look at to help predict whether or not someone will report a test score are:
 - Class Size
 - Class Rank
-- GPA's - HSGPA
-- D's at Midterm???
-- F's at Midterm???
+- HSGPA
 - FLAG_PELL_ELIGIBLE
 - FIRST_GENERATION
-- INTEREST1???
-- INTEREST2???
 
-We preformed backwards elimination to decide which variables to keep in the model. 
+These demographic variables listed above contain data about each student's high school education. We preformed backwards elimination to decide which variables to keep in the model. The first variable we decided to eliminate from this list was CLASS_RANK, it had a coefficient of -0.003756. Next, we decided to eliminate CLASS_SIZE, which had a coefficient of 0.002456. The other three variables, FLAG_FIRST_GENERATION, FLAG_PELL_ELIGIBLE, AND HSGPA, had coefficient values of 0.2418, -0.3890, and 0.2778. This being said, we decided to use these variables to predict whether someone will report a test score.
 
 ```{r}
+#Before College Variables
 library(caTools)
 set.seed(123)
+final_master_df$has_test_score = as.numeric(final_master_df$has_test_score)
 
 na.omit(final_master_df)
 
@@ -39,10 +37,174 @@ split = sample.split(final_master_df$has_test_score, SplitRatio = 0.75)
 training_set = subset(final_master_df, split == TRUE)
 test_set = subset(final_master_df, split == FALSE)
 
+# Fitting Logistic Regression to the Training set
+  classifier = glm(formula = has_test_score ~ HSGPA,
+                 family = binomial,
+                 data = training_set)
+
+
+# Predicting the Test set results
+prob_pred = predict(classifier, type = 'response', newdata = test_set,na.action = na.exclude)
+y_pred = ifelse(prob_pred > 0.75, 1, 0)
+
+
+ytrue <- (test_set %>% 
+  filter(!is.na(HSGPA),
+         !is.na(has_test_score)) %>%
+  select(has_test_score))[[1]]
+
+print(classifier)
+# Making the Confusion Matrix
+library(caret)
+confusionMatrix(as.factor(y_pred), as.factor(ytrue))
+
+```
+
+```{r}
+#AUC ROC 
+library(pROC)
+logreg_class = glm(formula = has_test_score ~ (FLAG_PELL_ELIGIBLE) + HSGPA + (FLAG_FIRST_GENERATION),
+                   family = binomial, 
+                   data = training_set)
+
+logreg_probs = predict(logreg_class, 
+                       type = 'response', 
+                       newdata = test_set)
+
+logregROC = roc(test_set$has_test_score ~ logreg_probs, plot=TRUE, print.auc=TRUE, col="green", lwd =2, legacy.axes=TRUE, main="ROC Curves")
+
+```
+
+#2. Are there differences in academic outcomes between those students who report and who don't report test scores? (Academic outcomes include things like GPA, D's & F's, retention, etc.)
+
+#Means
+```{r}
+#Subsetting into two groups: has score and has no score
+#D Midterm
+score = subset(final_master_df$D_midterm, final_master_df$has_test_score == '1')
+no_score = subset(final_master_df$D_midterm, final_master_df$has_test_score == '0')
+t.test(score, no_score)
+```
+```{r}
+
+#HSGPA
+score = subset(final_master_df$HSGPA, final_master_df$has_test_score == '1')
+no_score = subset(final_master_df$HSGPA, final_master_df$has_test_score == '0')
+t.test(score, no_score)
+```
+```{r}
+#F Midterm
+score = subset(final_master_df$F_midterm, final_master_df$has_test_score == '1')
+no_score = subset(final_master_df$F_midterm, final_master_df$has_test_score == '0')
+t.test(score, no_score)
+```
+```{r}
+#First year
+score = subset(final_master_df$first_year_gpa, final_master_df$has_test_score == '1')
+no_score = subset(final_master_df$first_year_gpa, final_master_df$has_test_score == '0')
+t.test(score, no_score)
+```
+```{r}
+#First term
+score = subset(final_master_df$first_term_gpa, final_master_df$has_test_score == '1')
+no_score = subset(final_master_df$first_term_gpa, final_master_df$has_test_score == '0')
+t.test(score, no_score)
+```
+```{r}
+#Class Rank
+score = subset(final_master_df$CLASS_RANK, final_master_df$has_test_score == '1')
+no_score = subset(final_master_df$CLASS_RANK, final_master_df$has_test_score == '0')
+t.test(score, no_score)
+```
+```{r}
+#Class Size
+score = subset(final_master_df$CLASS_SIZE, final_master_df$has_test_score == '1')
+no_score = subset(final_master_df$CLASS_SIZE, final_master_df$has_test_score == '0')
+t.test(score, no_score)
+```
+```{r}
+#First year cum.
+score = subset(final_master_df$first_year_cumulative, final_master_df$has_test_score == '1')
+no_score = subset(final_master_df$first_year_cumulative, final_master_df$has_test_score == '0')
+t.test(score, no_score)
+```
+
+
+```{r}
+#Categorical variables 
+matrix = as.matrix(table(final_master_df$enrollment_status, final_master_df$has_test_score))
+chisq.test(matrix)
+```
+```{r}
+#Categorical variables 
+matrix = as.matrix(table(final_master_df$ATHLETE, final_master_df$has_test_score))
+chisq.test(matrix)
+```
+```{r}
+#Categorical variables 
+matrix = as.matrix(table(final_master_df$INTEREST1, final_master_df$has_test_score))
+chisq.test(matrix)
+```
+```{r}
+#Categorical variables 
+matrix = as.matrix(table(final_master_df$MAJOR_2020FA, final_master_df$has_test_score))
+chisq.test(matrix)
+```
+```{r}
+#test score & Academics - using has_test_score as predictor variable
+
+library(caTools)
+set.seed(123)
 final_master_df$has_test_score = as.numeric(final_master_df$has_test_score)
+na.omit(final_master_df)
+
+#Class Rank
+split = sample.split(final_master_df$has_test_score, SplitRatio = 0.75)
+training_set = subset(final_master_df, split == TRUE)
+test_set = subset(final_master_df, split == FALSE)
+
+
 
 # Fitting Logistic Regression to the Training set
-  classifier = glm(formula = has_test_score ~ CLASS_RANK + CLASS_SIZE + FLAG_PELL_ELIGIBLE + HSGPA + FLAG_FIRST_GENERATION,
+  classifier = lm(formula = first_term_GPA ~ has_test_score + (FLAG_PELL_ELIGIBLE) + HSGPA + (FLAG_FIRST_GENERATION), 
+                 data = training_set)
+
+
+# Predicting the Test set results
+prob_pred = predict(classifier, type = 'response', newdata = test_set)
+y_pred = ifelse(prob_pred > 0.5, 1, 0)
+
+print(classifier)
+# Making the Confusion Matrix
+#library(caret)
+#confusionMatrix(as.factor(test_set$has_test_score), as.factor(y_pred))
+```
+
+```{r}
+#test score & Academics - after college variables
+library(caTools)
+set.seed(123)
+final_master_df$has_test_score = as.numeric(final_master_df$has_test_score)
+
+na.omit(final_master_df)
+
+split = sample.split(final_master_df$has_test_score, SplitRatio = 0.75)
+training_set = subset(final_master_df, split == TRUE)
+test_set = subset(final_master_df, split == FALSE)
+
+
+vec = rep(NA, 1166)
+for(i in 1:length(final_master_df$ATHLETE)) {           
+  if(final_master_df$ATHLETE[i] == "No") {
+    vec[i] = "0"
+  }
+  else {
+    vec[i] = "1"
+  }
+}
+
+# Fitting Logistic Regression to the Training set
+  classifier = glm(formula = has_test_score ~ HSGPA + first_term_GPA + first_year_gpa + D_midterm + F_midterm,
                  family = binomial, 
                  data = training_set)
 
@@ -53,31 +215,26 @@ y_pred = ifelse(prob_pred > 0.5, 1, 0)
 
 print(classifier)
 # Making the Confusion Matrix
-# library(caret)
-# confusionMatrix(as.factor(test_set$has_test_score),
-#                 as.factor(y_pred))
-
-```
-
-#2. Are there differences in academic outcomes between those students who report and who don't report test scores? (Academic outcomes include things like GPA, D's & F's, retention, etc.)
-
-```{r}
-library(dplyr)
-has_score = subset(final_master_df$has_test_score, final_master_df$has_test_score == 1)
-no_score = c(final_master_df$has_test_score, final_master_df$has_test_score == 0)
-
-final_master_df$ATHLETE = is.numeric(final_master_df$ATHLETE)
-final_master_df$enrollment_status = is.numeric(final_master_df$enrollment_status)
-
-
-
-final_master_df %>% 
-  select(has_test_score,HSGPA,CLASS_RANK,first_term_GPA,first_year_gpa ) %>% 
-  cor(.,use ="complete")
-
+#library(caret)
+#confusionMatrix(as.factor(test_set$has_test_score), as.factor(y_pred))
 ```
 
 #3. What factors should be used to award merit-based scholarships (to replace test scores)?
 #Modeling
   
-  Based off of the Logisitic Regression model and the correlation matrix, we believe that one of the best variables to be considered when awarding merit-based schoalrships (to replace test scores) would be the GPA variables, such as HSGPA and first_term_GPA, and first_year_gpa. Two more variables that should be considered when awarding scholarsips would be FLAG_PELL_ELIGIBLE and FLAG_FIRST_GENERATION.
+  Based off of the Logistic Regression model and the correlation matrix, we believe that one of the best variables to be considered when awarding merit-based scholarships (to replace test scores) would be the GPA variables, such as HSGPA and first_term_GPA, and first_year_gpa. Two more variables that should be considered when awarding scholarships would be FLAG_PELL_ELIGIBLE and FLAG_FIRST_GENERATION.
+  
+  To determine if there are any differences in academic outcomes between those students who report and who don't report test score, we decided to look at the correlation between the _has_test_score variable and HSGPA, first_term_GPA, first_year_gpa, D_midterm, F_midterm, and enrollment_status. 
+```{r}
+#Correlations between variables and has_test_score
+library(dplyr)
+final_master_df$ATHLETE = is.numeric(final_master_df$ATHLETE)
+final_master_df$enrollment_status = is.numeric(final_master_df$enrollment_status)
+final_master_df$enrollment_status_2020SP= is.numeric(final_master_df$enrollment_status_2020SP)
+
+final_master_df %>% 
+  select(has_test_score,HSGPA,first_term_GPA,first_year_gpa) %>% 
+  cor(.,use ="complete")
+
+#enrollment_status, D_midterm, F_midterm
+```
